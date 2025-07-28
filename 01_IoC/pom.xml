@@ -4,7 +4,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.shark</groupId>
-  <artifactId>project</artifactId>
+  <artifactId>01_IoC</artifactId>
   <version>1.0.0</version>
   <packaging>war</packaging>
   
@@ -40,6 +40,13 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    
+    <!-- Spring Context -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
       <version>${spring.version}</version>
     </dependency>
     
@@ -147,10 +154,10 @@
   
   <build>
     <plugins>
-      <!-- Compile (*.java To *.class) -->
+      <!-- Compiler (*.java To *.class) -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compile-plugin</artifactId>
+        <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
           <source>${java.version}</source>

@@ -1,4 +1,4 @@
-package org.shark.ioc.ex01_xml;
+package org.shark.ioc.chap02_java;
 
 public class Multiplier {
 
@@ -7,7 +7,7 @@ public class Multiplier {
     if (args == null) {
       return 0;
     }
-    for (int i = 0; i <= args.length; i++) {
+    for (int i = 0; i < args.length; i++) {
       total *= args[i];
     }
     return total;

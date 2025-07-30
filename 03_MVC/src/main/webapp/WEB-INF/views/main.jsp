@@ -11,5 +11,7 @@
 </head>
 <body>
   <h1>Hello World</h1>
+  
+  <img alt="사공사낫빠운드" src="${contextPath}/assets/image/404.jpg">
 </body>
 </html>

@@ -23,10 +23,32 @@
   	  	.then(response => response.json())
   	  	.then(jsonData => {
   	  	  console.log(jsonData);
-  	  	  // document.getElementById("get-json").textContent = JSON.stringify(jsonData));
+  	  	  document.getElementById("get-json").textContent = jsonData;
+  	  	})
+  	}
+  </script>
+  
+  <hr>
+  
+  <button onclick="getXml()">getXml</button>
+  <br>
+  <div id="get-xml"></div>
+  <script type="text/javascript">
+  	function getXml(){
+  	  fetch("${contextPath}/a/list.xml")
+  	  	.then(response => response.text())
+  	  	.then(xmlStr => {
+  	  	  const parser = new DOMParser();
+  	  	  const xmlDoc = parser.parseFromString(xmlStr, "application/xml");
+  	  	  console.log(xmlDoc);
+  	  	  console.log(xmlDoc.querySelectorAll("item"));
+  	  	  document.getElementById("get-xml").textContent = xmlDoc.querySelector("title").textContent;
   	  	})
   	}
   
   </script>
+  
+
+  
 </body>
 </html>

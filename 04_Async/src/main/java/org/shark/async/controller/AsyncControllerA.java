@@ -37,9 +37,11 @@ public class AsyncControllerA {
     return boards;
   }
   
-  @RequestMapping(value = "/list.xml")
-  public void methodB() {
-    
+  @ResponseBody
+  @RequestMapping(value = "/list.xml"
+                , produces = "application/xml")  //----- 응답 데이터는 XML 입니다.
+  public List<BoardDTO> methodB() {
+    return boards;
   }
   
 }

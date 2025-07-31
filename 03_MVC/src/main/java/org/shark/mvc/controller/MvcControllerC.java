@@ -24,6 +24,19 @@ public class MvcControllerC {
   
   /******************************** forward ********************************/
   
+  /*
+   * org.springframework.ui.Model
+   * 
+   * 1. 컨트롤러가 View(JSP)로 데이터를 전달(forward)할 때 사용하는 인터페이스입니다.
+   *    Servlet의 request.setAttribute()와 유사한 역할을 수행합니다.
+   * 2. 컨트롤러 메소드의 파라미터로 선언해서 사용합니다.
+   * 3. Key-Value 형태로 데이터를 저장합니다.
+   * 4. 주요 메소드
+   *    1) addAttribute(String key, Object value)
+   *    2) asMap()
+   * 5. 리다이렉트 시에는 Model에 저장한 데이터는 소멸됩니다.
+   */
+  
   //----- ModelAndView를 이용한 forward (데이터 전달)
   @RequestMapping("/list")
   public ModelAndView methodA() {
@@ -43,6 +56,21 @@ public class MvcControllerC {
   }
   
   /******************************** redirect ********************************/
+  
+  /*
+   * org.springframework.web.servlet.mvc.support.RedirectAttributes
+   * 
+   * 1. 리다이렉트 시 데이터를 일시적으로 전달하는데 사용하는 인터페이스입닏.
+   * 2. 리다이렉트 시 Model에 저장한 데이터는 소멸되므로(새로운 요청이기 때문에) RedirectAttributes를 사용해야
+   * 3. 주요 메소드
+   *    1) addAttribute(String key, Object value)
+   *      (1) 전달할 데이터를 쿼리 스트링(/url?key=value) 형태로 넘깁니다. (정보가 주소창에 노출됩니다.)
+   *      (2) 새로 고침을 하더라도 데이터가 유지됩니다.
+   *    2) addFlashAttribute(String key, Object value)
+   *      (1) 데이터를 내부적으로 세션에 임시로 저장하고, 리다이렉트 이후 딱 한 번만 사용할 수 있습니다. (세션에서 자동 소멸)
+   *      (2) 정보가 주소창에 노출되지 않습니다.
+   *      (3) 주로 성공/실패 메시지, 경고 메시지 등 임시 정보를 전달할 때 사용합니다.
+   */
   
   //----- RedirectAttributes를 이용한 redirect
   @RequestMapping("/regist")  //----- 요청 주소 : /c/regist?title=신규제목&hit=0

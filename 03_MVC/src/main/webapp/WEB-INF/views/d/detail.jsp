@@ -10,6 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-  <h1>/b/레지스트</h1>
+  <h1>"/d/detail"입니다</h1>
+  ${board}
 </body>
 </html>

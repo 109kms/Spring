@@ -4,14 +4,16 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <c:set var="redirectURL" value="${pageContext.request.requestURI}" />
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
 </head>
 <body>
-  <h1>Hello World</h1>
-  <a href="${contextPath}/user/login?redirectURL=${redirectURL}">록으인</a>
+
+  <h1>로그인 화면이에요</h1>
+  ${redirectURL}
+
 </body>
 </html>

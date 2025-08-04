@@ -4,14 +4,29 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <c:set var="redirectURL" value="${pageContext.request.requestURI}" />
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
 </head>
 <body>
-  <h1>Hello World</h1>
-  <a href="${contextPath}/board/list">게시판</a>
+
+  <h1>Board Write</h1>
+  
+  <form method="post"
+        action="${contextPath}/board/write">
+  
+    <div>작성자 : ${sessionScope.nickname}</div>
+    
+    <label>제목 <input type="text" name="title" autofocus></label>
+    <br>
+    <textarea name="content">Editor 필요</textarea>
+    <br>
+    
+    <button type="submit">등록</button>      
+        
+  </form>
+
 </body>
 </html>

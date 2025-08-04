@@ -18,6 +18,10 @@ public class BoardDAO {
     return template.selectList("mybatis.mapper.boardMapper.getBoards");
   }
   
+  public Integer getBoardCount() {
+    return template.selectOne("mybatis.mapper.boardMapper.getBoardCount");
+  }
+  
   public BoardDTO getBoardById(int bid) {
     return template.selectOne("mybatis.mapper.boardMapper.getBoardById", bid);
   }

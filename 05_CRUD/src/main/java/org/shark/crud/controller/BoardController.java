@@ -33,7 +33,6 @@ public class BoardController {
   
   @GetMapping("/write")
   public String writeForm(HttpSession session) {
-    session.setAttribute("nickname", "shark");
     return "board/write";
   }
   

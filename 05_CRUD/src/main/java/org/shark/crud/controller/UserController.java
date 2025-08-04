@@ -1,12 +1,16 @@
 package org.shark.crud.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.shark.crud.model.dto.UserDTO;
 import org.shark.crud.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,28 +22,37 @@ public class UserController {
   private final UserService userService;
   
   @GetMapping("/login")
-  public String loginForm(String redirectURL
-                        , HttpServletRequest request
+  public String loginForm(String url
                         , Model model) {
-    
-    
-    //----- 로그인 페이지로 이동하기 전에 전달된 redirect이 있으면 전달
-    if (redirectURL == null || redirectURL.isEmpty()) {
-      //----- 이전 페이지를 기억하고 있는 요청 헤더 Referer 참고 (없을 수도 있음)
-      String referer = request.getHeader("Referer");
-      if (referer == null || referer.isEmpty()) {
-        redirectURL = "/";
-      } else {
-        redirectURL = referer;
-      }
+    model.addAttribute("url", url);  //----- 로그인 페이지로 url을 전달합니다.
+    return "user/login"; 
+  }
+  
+  @PostMapping("/login")
+  public String login(HttpServletRequest request  //----- 로그인 성공 시 세션에 nickname 올리기 위함 / contextPath를 사용하기 위함
+                    , RedirectAttributes redirectAttr  // 로그인 실패 시 에러메시지 담아서 다시 로그인 페이지로 redirect 하기 위함입니다.
+                    , UserDTO user  //----- 요청 파라미터 email, password를 받습니다.
+                    , String url) {  //------- 요청 파라미터 url을 받습니다.
+    //-----
+    //----- email. password를 가진 사용자 조회하기
+    UserDTO loginUser = userService.findUserByEmailAndPassword(user);
+    //----- 사용자 정보가 없으면 에러메시지 담아서 다시 로그인 페이지로 refirect 하기
+    if (loginUser == null) {
+      redirectAttr.addFlashAttribute("error", "아이디와 비밀번호를 확인하세요.")
+                  .addAttribute("url", url);  //----- redirect 경로에 요청 파라미터 ?url=url을 추가하는 코드
+      return "redirect:/user/login";
     }
-
-    //----- 로그인 페이지로 redirectURL 전달
-    model.addAttribute("redirectURL", redirectURL);
-    
-    //----- 로그인 페이지로 forward
-    return "user/login";  //----- JSP 이름
-    
+    //----- 사용자 정보가 있으면 세션에 nickname만 올리고 url로 redirect 하기
+    request.getSession().setAttribute("nickname", loginUser.getNickname());
+    return "redirect:" + (url == null ? request.getContextPath() : url);  //----- url 전달이 없으면 contextPath로 redirect
+  }
+  
+  @GetMapping("/logout")
+  public String logout(HttpSession session) {
+    //----- 세션 초기화
+    session.invalidate();
+    //----- redirect
+    return "redirect:/";
   }
   
 }

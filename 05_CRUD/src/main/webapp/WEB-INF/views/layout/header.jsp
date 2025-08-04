@@ -14,13 +14,20 @@
   const msg = "${msg}";
   if (msg !== "") alert(msg);
   function loginForm() {
-    location.href = `${contextPath}/user/login?url=\${location.href}`;  //----- 현재 페이지의 주소(url)를 전달하면 로그인 성공 후 현재 페이지로 되돌아 올 수 있습니다.
+    //----- 로그인 실패 시 login.jsp -> login.jsp 페이지 이동이 발생합니다.
+    //		이 때 전달되는 url은 로그인 페이지 이동 요청 주소("/user/login")입니다.
+    //		그렇게 되면 로그인 성공 후 url로 이동 시 다시 로그인 페이지로 오게 됩니다.
+    //		따라서, url이 로그인 페이지 이동 요청인 경우에는 url을 전달하지 않습니다.
+    if ( !location.href.includes("/user/login") )
+      location.href = `${contextPath}/user/login?url=\${location.href}`;  //----- 현재 페이지의 주소(url)를 전달하면 로그인 성공 후 현재 페이지로 되돌아 올 수 있습니다.
+    else
+      location.href = `${contextPath}/user/login`;
   }
 </script>
 </head>
 <body>
 
-  <h1>Hello World</h1>
+  <h1>루가루암(한밤중의 모습)</h1>
 
   <c:if test="${empty sessionScope.nickname}">
     <div>

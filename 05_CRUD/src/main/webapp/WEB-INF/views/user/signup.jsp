@@ -12,13 +12,15 @@
 </head>
 <body>
 
+  <!-- 정규식 / 이메일 인증 / 비밀번호 확인 포함 필요 -->
+
   <h1>SignUp</h1>
   
   <form method="post"
         action="${contextPath}/user/signup">
   
-    <label>email : <input type="text" name="email"></label>
-    <span id="email-msg"></span>
+    <label>email : <input type="text" name="email" id="email"></label>
+    <span id="email-msg" style="color: red"></span>
     <br>
     
     <label>password : <input type="password" name="password"></label>
@@ -36,6 +38,25 @@
     <div style="font-size: 12px; color: red;">${error}</div>
   </c:if>
   
+  <script type="text/javascript">
+  	//----- 이메일 입력 완료 후 이메일 중복을 체크합니다.
+  	function emailDuplicateCheck(){
+  	  const email = document.getElementById("email");
+  	  email.addEventListener("blur", function(e) {
+  	    fetch("${contextPath}/user/emailDuplicateCheck?email=" + email.value)
+  	      .then(response => response.json())
+  	      .then(jsonData => {
+  	        // console.log(jsonData);
+  	        if ( !(jsonData.result) ) {
+  	          document.getElementById("email-msg").textContent = jsonData.msg;
+  	        } else {
+  	          document.getElementById("email-msg").textContent = "";
+  	        }
+  	      })
+  	  })
+  	}
+  	emailDuplicateCheck();
+  </script>
   
 </body>
 </html>

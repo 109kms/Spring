@@ -13,12 +13,21 @@ public class UserDAO {
   private final SqlSessionTemplate template;
   
   //----- 조회 (회원 정보)
-  public UserDTO getUser(UserDTO user) {
+  public UserDTO getUserByEmailAndPassword(UserDTO user) {
     return template.selectOne("mybatis.mapper.userMapper.getUser", user);
   }
   
   public UserDTO getUserByNickname(String nickname) {
     return template.selectOne("mybatis.mapper.userMapper.getUserByNickname", nickname);
+  }
+  
+  // 조회 (회원 정보)
+  public UserDTO getUserByEmail(String email) {
+    return template.selectOne("mybatis.mapper.userMapper.getUserByEmail", email);
+  }
+  
+  public int insertUser(UserDTO user) {
+    return template.insert("mybatis.mapper.userMapper.insertUser", user);
   }
   
 }

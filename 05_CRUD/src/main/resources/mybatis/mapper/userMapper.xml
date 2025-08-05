@@ -11,7 +11,7 @@
   -->
 
   <!-- 조회 (회원 정보) -->
-  <select id="getUser" parameterType="UserDTO" resultType="UserDTO">
+  <select id="getUserByEmailAndPassword" parameterType="UserDTO" resultType="UserDTO">
     SELECT uid, email, password, salt, nickname
       FROM tbl_user
      WHERE email = #{email} AND password = #{password}
@@ -23,5 +23,18 @@
       FROM tbl_user
      WHERE nickname = #{nickname}
   </select>
+  
+  <!-- 조회 (회원 정보) -->
+  <select id="getUserByEmail" parameterType="String" resultType="UserDTO">
+    SELECT uid, email, password, salt, nickname
+      FROM tbl_user
+     WHERE email = #{email}
+  </select>
+  
+  <!-- 등록 (회원 가입) -->
+  <insert id="insertUser" parameterType="UserDTO">
+    INSERT INTO tbl_user (email, password, salt, nickname)
+    VALUES (#{email}, #{password}, #{salt}, #{nickname})
+  </insert>
   
 </mapper>

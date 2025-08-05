@@ -12,14 +12,14 @@
 
   <!-- 조회 (회원 정보) -->
   <select id="getUser" parameterType="UserDTO" resultType="UserDTO">
-    SELECT uid, email, password, nickname
+    SELECT uid, email, password, salt, nickname
       FROM tbl_user
      WHERE email = #{email} AND password = #{password}
   </select>
   
   <!-- 조회 (회원 정보) -->
   <select id="getUserByNickname" parameterType="String" resultType="UserDTO">
-    SELECT uid, email, password, nickname
+    SELECT uid, email, password, salt, nickname
       FROM tbl_user
      WHERE nickname = #{nickname}
   </select>

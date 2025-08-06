@@ -15,7 +15,7 @@
 </head>
 <body>
   
-  <a href=${contextPath}/notice/write">작성</a>
+  <a href="${contextPath}/notice/write">작성</a>
   
   <hr>
   

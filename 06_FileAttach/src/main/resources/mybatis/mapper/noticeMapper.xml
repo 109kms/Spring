@@ -24,20 +24,20 @@
       FROM tbl_attach
      WHERE nid = #{nid}
   </select>
-  
-  <insert id="insertNotice" parameterType="NoticeDTO">
-    INSERT INTO tbl_notice (title, content)
-    VALUES (#{title}, #{content})
-  </insert>
-  
-  <!-- 
+    <!-- 
     tbl_notice 테이블의 PK(nid)가 MySQL에서 AUTO_INCREMENT인 경우,
     useGeneratedKeys="true" keyProperty="nid" 옵션을 주면,
     파라미터로 전달된 NoticeDTO 객체의 nid 필드에 DB에서 생성된 PK값이 자동으로 저장됩니다.
   -->
-  <insert id="insertAttach" parameterType="AttachDTO"
+  <insert id="insertNotice" parameterType="NoticeDTO"
           useGeneratedKeys="true"
           keyProperty="nid">
+    INSERT INTO tbl_notice (title, content)
+    VALUES (#{title}, #{content})
+  </insert>
+  
+
+  <insert id="insertAttach" parameterType="AttachDTO">
     INSERT INTO tbl_attach (nid, file_path, original_filename, filesystem_name)
     VALUES (#{nid}, #{filePath}, #{originalFilename}, #{filesystemName})
   </insert>
@@ -48,7 +48,11 @@
      WHERE nid = #{nid}
   </delete>
   
-  
+  <select id="getAttachById" parameterType="java.lang.Integer" resultType="AttachDTO">
+    SELECT aid, nid, file_path, original_filename, filesystem_name
+      FROM tbl_attach
+     WHERE aid = #{aid}
+  </select>
   
   
   

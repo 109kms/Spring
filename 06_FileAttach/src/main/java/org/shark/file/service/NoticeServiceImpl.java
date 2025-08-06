@@ -11,11 +11,15 @@ import org.shark.file.model.dto.AttachDTO;
 import org.shark.file.model.dto.NoticeDTO;
 import org.shark.file.repository.NoticeDAO;
 import org.shark.file.util.FileUtil;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
+@Transactional  //----- 서비스 클래스 레벨에 설정한 @Transactional에 의해서 모든 메소드는 트랜잭션 처리가 됩니다.
 @RequiredArgsConstructor
 @Service
 public class NoticeServiceImpl implements NoticeService {
@@ -23,6 +27,7 @@ public class NoticeServiceImpl implements NoticeService {
   private final NoticeDAO noticeDAO;
   private final FileUtil  fileUtil;
 
+  @Transactional(readOnly = true)  //----- 읽기 전용 최적화를 통해 트랜잭션 처리가
   @Override
   public List<NoticeDTO> findNotices() {
     return noticeDAO.getNotices();
@@ -30,9 +35,10 @@ public class NoticeServiceImpl implements NoticeService {
 
   @Override
   public Map<String, Object> findNoticeById(Integer nid) {
-    return Map.of("notice", noticeDAO.getNoticeById(nid), "attached", noticeDAO.getAttaches(nid));
+    return Map.of("notice", noticeDAO.getNoticeById(nid), "attaches", noticeDAO.getAttaches(nid));
   }
 
+  @Transactional(readOnly = true)  //----- 읽기 전용 최적화를 통해 트랜잭션 처리가
   @Override
   public boolean addNotice(NoticeDTO notice, List<MultipartFile> files) {
     
@@ -87,8 +93,9 @@ public class NoticeServiceImpl implements NoticeService {
     
   }
 
+  @Transactional(readOnly = true)  //----- 읽기 전용 최적화를 통해 트랜잭션 처리가
   @Override
-  public boolean deleteNotice(Integer nid) {
+  public boolean deleteNoticeById(Integer nid) {
     //----- 삭제하려는 공지사항에 등록된 첨부 목록 가져오기
     List<AttachDTO> attaches = noticeDAO.getAttaches(nid);
     //----- 첨부 목록 참조해서 서버에 저장된 첨부 파일들을 삭제하기
@@ -115,6 +122,17 @@ public class NoticeServiceImpl implements NoticeService {
     */
     //----- DB에서 공지사항 삭제하기 (ON DELETE CASCADE에 의해서 첨부 목록은 함께 삭제됩니다.)
     return noticeDAO.deleteNoticeById(nid) == 1;
+  }
+  
+  @Transactional(readOnly = true)  //----- 읽기 전용 최적화를 통해 트랜잭션 처리가
+  @Override
+  public AttachDTO findAttachById(Integer aid) {
+    return noticeDAO.getAttachById(aid);
+  }
+  
+  @Override
+  public Resource loadAttachAsResource(AttachDTO attach) {
+    return new FileSystemResource(attach.getFilePath() + "/" + attach.getFilesystemName());
   }
 
 }

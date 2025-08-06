@@ -13,7 +13,7 @@
   
   <h1>Write Notice</h1>
   <form method="post"
-        action="${contextPath}/notice/signup"
+        action="${contextPath}/notice/write"
         enctype="multipart/form-data"
         id="writeForm">
     <label>title : <input type="text" name="title"></label>
@@ -26,39 +26,26 @@
   </form>
   
   <script type="text/javascript">
-  	const files = document.getElementById("files");  //----- files DOM 객체
-    const limitPerFile = 1024 * 1024;
-  	const limitTotal = 1024 * 1024;
-  	files.addEventListener("change", function(e) {
-  	  //----- 첨부된 파일  
-  	  for (const file of files.files) {  //------------------------- files DOM 객체의 files 프로퍼티
-  	  	
-  	  }
-  	  if (file) {
-  	    const limit = 1024 * 1024 * 10; //----- 10MB
-  	    if (file.size > limit) {
-  	      alert('파일이 너무 커요;;');
-  	      file.value = "";  //----- 첨부된 파일 초기화
-  	      e.preventDefault();  //-- 서브밋 방지
-  	      return;
-  	    }
-  	  }
-  	})
+    const files = document.getElementById("files");  //----- files DOM 객체
+    const limitPerFile = 1024 * 1024 * 10;  //-------------- 10MB (개별 파일 최대 크기)
+    const limitTotal = 1024 * 1024 * 100;   //-------------- 100MB (모든 파일 합산 최대 크기)
+    files.addEventListener("change", function(e) {
+      let total = 0;
+      for (const file of files.files) {  //----------------- files DOM 객체의 files 프로퍼티
+        if (file.size > limitPerFile) {
+          alert('첨부 파일 최대 크기는 10MB입니다.');
+          files.value = "";  //----- 첨부된 파일 초기화
+          return;          
+        }
+        total += file.size;
+        if (total > limitTotal) {
+          alert('전체 첨부 파일 최대 크기는 100MB입니다.');
+          files.value = "";  //----- 첨부된 파일 초기화
+          return;          
+        }
+      }
+    })
   </script>
-  
-  <hr>
-  
-  <h1>User List</h1>
-  <table border="1">
-    <tbody>
-      <c:forEach items="${users}" var="user">
-        <tr>
-          <td><a href="${contextPath}/user/detail?uid=${user.uid}">${user.email}</a></td>
-          <td>${user.originalFilename}</td>
-        </tr>
-      </c:forEach>
-    </tbody>
-  </table>
 
 </body>
 </html>

@@ -11,13 +11,28 @@
 </head>
 <body>
   
-  <h1>View Profile</h1>
+  <h1>${notice.title}</h1>
   
-  <div>email : ${user.email}</div>
-  <div>profile image</div>
-  <div>
-    <img alt="프로필" src="${contextPath}${user.filePath}/${user.filesystemName}">
-  </div>
+  <h4>첨부 파일</h4>
+  <c:forEach items="${attaches}" var="attach">
+    <div>
+      <a class="download-links" href="${contextPath}/notice/download?aid=${attach.aid}">${attach.originalFilename}</a>
+    </div>
+  </c:forEach>
+  
+  <pre>${notice.content}</pre>
+  
+  <button type="button" onclick="onDelete()">삭제</button>
+  <script type="text/javascript">
+  	
+  	//----- 삭제
+  	function onDelete() {
+  	  if (confirm("현재 공지사항을 삭제할까요?")){
+  	    location.href = "${contextPath}/notice/remove?nid=${notice.nid}";
+  	  }
+  	}
+  
+  </script>
 
 </body>
 </html>

@@ -1,10 +1,14 @@
 package org.shark.file.controller;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
+import org.shark.file.model.dto.AttachDTO;
 import org.shark.file.model.dto.NoticeDTO;
 import org.shark.file.service.NoticeService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +34,7 @@ public class NoticeController {
   
   @GetMapping("/write")
   public String writeForm() {
-    return "notice/writeForm";
+    return "notice/write";
   }
   
   @PostMapping("/write")
@@ -54,9 +58,34 @@ public class NoticeController {
   @GetMapping("/remove")
   public String remove(Integer nid
                      , RedirectAttributes redirectAttr) {
-    boolean result = noticeService.deleteNotice(nid);
+    boolean result = noticeService.deleteNoticeById(nid);
     redirectAttr.addFlashAttribute("msg", result ? "삭제 성공" : "삭제 실패");
     return "redirect:/notice/list";
+  }
+  
+//@ResponseBody가 없어도 응답 본문을 사용하는 ResponseEntity 클래스 사용
+  @GetMapping(value = "/download", produces = "application/octet-stream")
+  public ResponseEntity<Resource> download(Integer aid) throws Exception{
+    //----- 다운로드 할 파일의 정보 확인
+    AttachDTO foundAttach = noticeService.findAttachById(aid);
+    if (foundAttach == null) {
+      return ResponseEntity.notFound().build();
+    }
+    //----- 다운로드 할 파일을 Resource 타입으로 만듦
+    Resource resource = noticeService.loadAttachAsResource(foundAttach);
+    if ( !resource.exists() || !resource.isFile()) {
+      return ResponseEntity.notFound().build();
+    }
+    //----- 사용자들이 다운로드 받는 파일의 이름은 원본 이름입니다.
+    //       원본 파일명은 UTF-8 인코딩이 반드시 필요합니다.
+    String encodedFilename = URLEncoder.encode(foundAttach.getOriginalFilename(), "UTF-8")
+                                       .replace("\\+", "%20");
+    //----- 다운로드 시 응답 헤더(Content-Disposition) 설정
+    String contentDisposition = "attachment; filename=\"" + encodedFilename + "\"";
+    //----- 응답 (다운로드)
+    return ResponseEntity.ok()
+              .header("Content-Disposition", contentDisposition)
+              .body(resource);
   }
   
 }

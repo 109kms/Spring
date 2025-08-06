@@ -32,11 +32,15 @@ public class NoticeDAO {
   }
   
   public int insertAttach(AttachDTO attach) {
-    return sqlSession.insert("mybatis.mapper.noticeMapper.insertNotice", attach);
+    return sqlSession.insert("mybatis.mapper.noticeMapper.insertAttach", attach);
   }
   
   public int deleteNoticeById(Integer nid) {
     return sqlSession.delete("mybatis.mapper.noticeMapper.deleteNoticeById", nid);
+  }
+  
+  public AttachDTO getAttachById(Integer aid) {
+    return sqlSession.selectOne("mybatis.mapper.noticeMapper.getAttachById", aid);
   }
   
 }

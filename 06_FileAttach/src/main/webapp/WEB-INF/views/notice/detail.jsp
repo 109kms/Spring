@@ -10,13 +10,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-  <a href="${contextPath}/user/list">User List</a>
-  <br>
-  <a href="${contextPath}/notice/list">Notice</a>
-  <script type="text/javascript">
-  	const msg = "${msg}";
-  	if (msg !== "")
-  	  alert(msg);
-  </script>
+  
+  <h1>View Profile</h1>
+  
+  <div>email : ${user.email}</div>
+  <div>profile image</div>
+  <div>
+    <img alt="프로필" src="${contextPath}${user.filePath}/${user.filesystemName}">
+  </div>
+
 </body>
 </html>

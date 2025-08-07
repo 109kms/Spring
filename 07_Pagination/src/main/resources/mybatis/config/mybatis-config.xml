@@ -13,6 +13,7 @@
   <typeAliases>
     
     <typeAlias type="org.shark.pagination.model.dto.UserDTO" alias="UserDTO" />
+    <typeAlias type="org.shark.pagination.model.dto.PageDTO" alias="PageDTO" />
     
   </typeAliases>
 

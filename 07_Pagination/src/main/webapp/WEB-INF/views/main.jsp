@@ -10,6 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-  <h1>Hello World</h1>
+  <h1>루가루암(한밤중의 모습)</h1>
+  <a href="${contextPath}/user/list">회원 목록</a>
 </body>
 </html>

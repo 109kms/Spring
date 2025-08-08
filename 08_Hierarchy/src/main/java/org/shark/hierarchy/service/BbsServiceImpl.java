@@ -64,7 +64,6 @@ public class BbsServiceImpl implements BbsService {
         throw new RuntimeException("답글 등록 실패");
       }
     } catch (Exception e) {
-      e.printStackTrace();
       throw new RuntimeException("답글 등록 중 오류가 발생했습니다.", e);
     }
     return true;
@@ -85,7 +84,7 @@ public class BbsServiceImpl implements BbsService {
     pageUtil.calculatePaging(dto);
     List<BbsDTO> bbsList = bbsDAO.getBbsList(dto);
     //----- 결과 반환
-    return Map.of("bbsList", bbsList);
+    return Map.of("bbsList", bbsList, "pageDTO", dto);
   }
 
 }

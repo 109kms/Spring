@@ -11,7 +11,26 @@
   .blind {
     display: none;
   }
+    .disabled-button {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+        border: none;
+        padding: 5px 10px;
+    }
+    .focus-page {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+    }
+    button {
+        margin: 0 2px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
 </style>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -75,10 +94,33 @@
     </tbody>
     <tfoot>
       <tr>
-        <td colspan="2" style="text-align: center;">
-          <div class="pagination">
-            
-          </div>
+        <td colspan="2">
+          <c:if test="${pageDTO.beginPage} eq 1">
+            <button type="button" class="disabled-button">&lt;</button>
+          </c:if>
+          <c:if test="${pageDTO.beginPage} ne 1">
+            <button type="button" onclick="location.href=`${contextPath}/bbs/list?page=${pageDTO.beginPage-1}&size=${pageDTO.size}`">&lt;</button>
+          </c:if>
+
+
+          <c:forEach begin="${pageDTO.beginPage}" end="${pageDTO.endPage}" var="p">
+            <c:if test="${p eq pageDTO.page}">
+              <button type="button" class="focus-page" onclick="location.href=`${contextPath}/bbs/list?page=${p}&size=${pageDTO.size}`"> ${p} </button>
+            </c:if>
+          <c:if test="${p ne pageDTO.page}">
+            <button type="button" onclick="location.href=`${contextPath}/bbs/list?page=${p}&size=${pageDTO.size}`"> ${p} </button>
+          </c:if>
+          </c:forEach>
+
+
+          <c:if test="${pageDTO.beginPage} eq 1">
+            <button type="button" class="disabled-button">&gt;</button>
+          </c:if>
+          <c:if test="${pageDTO.beginPage} ne 1">
+            <button type="button" onclick="location.href=`${contextPath}/bbs/list?page=${pageDTO.endPage-1}&size=${pageDTO.size}`">&gt;</button>
+          </c:if>
+
+
         </td>
       <tr>
     </tfoot>
